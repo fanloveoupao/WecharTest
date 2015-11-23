@@ -1,0 +1,26 @@
+package com.example.activity;
+
+import android.app.Activity;
+import android.os.Bundle;
+import android.widget.Button;
+
+import com.example.testwechar.R;
+
+public class AddroomOrFriends extends Activity {
+	private Button btn_room;
+	private Button btn_fid;
+
+	@Override
+	protected void onCreate(Bundle savedInstanceState) {
+		// TODO 自动生成的方法存根
+		super.onCreate(savedInstanceState);
+		setContentView(R.layout.addfriedsorroom);
+		init();
+	}
+
+	private void init() {
+		// TODO 自动生成的方法存根
+		btn_room = (Button) findViewById(R.id.create_room);
+		btn_fid = (Button) findViewById(R.id.add_friends);
+	}
+}

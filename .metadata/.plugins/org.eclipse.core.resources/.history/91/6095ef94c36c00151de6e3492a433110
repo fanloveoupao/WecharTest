@@ -1,0 +1,48 @@
+package com.example.service;
+
+import org.jivesoftware.smack.Chat;
+import org.jivesoftware.smack.ChatManager;
+import org.jivesoftware.smack.ChatManagerListener;
+import org.jivesoftware.smack.MessageListener;
+import org.jivesoftware.smack.packet.Message;
+
+import android.content.Context;
+import android.content.Intent;
+import android.util.Log;
+
+import com.example.testwechar.MyApplication;
+
+public class ConnecMethod {
+	/**
+	 * 获取在线消息
+	 * 
+	 */
+	public static void getOnLine(final Context context) {
+		ChatManager cm = MyApplication.xmppConnection.getChatManager();
+		cm.addChatListener(new ChatManagerListener() {
+			@Override
+			public void chatCreated(Chat chat, boolean able) {
+				chat.addMessageListener(new MessageListener() {
+					@Override
+					public void processMessage(Chat chat2, Message message) {
+						Log.d("connectMethod:getOnLine()", message.getBody()
+								+ message.getFrom());
+						sendBroadcastMsg(context, message.getBody());
+					}
+				});
+			}
+		});
+	}
+
+	/**
+	 * 
+	 * 设置广播进行接收
+	 * 
+	 * */
+	private static void sendBroadcastMsg(Context context, String txt) {
+		Intent intent = new Intent();
+		intent.setAction("msg_receiver");
+		intent.putExtra("msg", txt);
+		context.sendBroadcast(intent);
+	}
+}

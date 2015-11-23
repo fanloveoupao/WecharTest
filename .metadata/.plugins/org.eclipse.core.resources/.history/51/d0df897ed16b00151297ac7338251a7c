@@ -1,0 +1,66 @@
+package com.example.activity;
+
+import org.jivesoftware.smack.XMPPException;
+import org.jivesoftware.smackx.muc.MultiUserChat;
+
+import android.app.Activity;
+import android.os.Bundle;
+import android.view.View;
+import android.view.View.OnClickListener;
+import android.widget.Button;
+import android.widget.EditText;
+
+import com.example.testwechar.MyApplication;
+import com.example.testwechar.R;
+
+public class LoginActivity extends Activity {
+	private EditText username;
+	private EditText password;
+	private Button login;
+	private Button register;
+
+	@Override
+	protected void onCreate(Bundle savedInstanceState) {
+		// TODO 自动生成的方法存根
+		super.onCreate(savedInstanceState);
+		setContentView(R.layout.login);
+		init();
+		clicklogin();
+	}
+
+	private void init() {
+		// TODO 自动生成的方法存根
+		username = (EditText) findViewById(R.id.username);
+		password = (EditText) findViewById(R.id.password);
+		login = (Button) findViewById(R.id.login);
+		register = (Button) findViewById(R.id.register);
+	}
+
+	private void clicklogin() {
+		// TODO 自动生成的方法存根
+		login.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View v) {
+				// TODO 自动生成的方法存根
+				// 登录服务器
+				if (MyApplication.xmppConnection.isConnected()) {
+					try {
+						MyApplication.xmppConnection.login(username.getText()
+								.toString(), password.getText().toString());
+						MyApplication.userChat = new MultiUserChat(
+								MyApplication.xmppConnection,
+								"bruse@conference.pc-201504062324");
+						MyApplication.userChat.join("欢迎回来");
+
+						// 进行接收消息
+
+					} catch (XMPPException e) {
+						// TODO 自动生成的 catch 块
+						e.printStackTrace();
+					}
+				}
+			}
+		});
+	}
+}

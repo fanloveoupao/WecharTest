@@ -1,0 +1,6 @@
+package com.example.bean;
+
+public class ListGroup {
+	private String name;
+	private String num;
+}

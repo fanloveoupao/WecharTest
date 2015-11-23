@@ -1,0 +1,100 @@
+package com.example.testwechar;
+
+import java.io.IOException;
+
+import org.apache.harmony.javax.security.sasl.SaslException;
+import org.jivesoftware.smack.ConnectionConfiguration;
+import org.jivesoftware.smack.PacketListener;
+import org.jivesoftware.smack.XMPPConnection;
+import org.jivesoftware.smack.XMPPException;
+import org.jivesoftware.smack.packet.Message;
+import org.jivesoftware.smack.packet.Message.Type;
+import org.jivesoftware.smack.packet.Packet;
+import org.jivesoftware.smackx.muc.MultiUserChat;
+
+import com.example.bean.Msg;
+
+import android.app.Application;
+
+public class MyApplication extends Application {
+	// 在清单文件里面注册使程序一开始就进行执行onCreate的方法
+	public static MultiUserChat userChat = null;
+
+	@Override
+	public void onCreate() {
+		// TODO 自动生成的方法存根
+		super.onCreate();
+		new Thread() {
+			public void run() {
+				try {
+					// 连接服务器
+					ConnectionConfiguration configuration = new ConnectionConfiguration(
+							"192.168.1.113", 5222, "pc-201504062324");
+					XMPPConnection xmppConnection = new XMPPConnection(
+							configuration);
+					xmppConnection.connect();
+					if (xmppConnection.isConnected()) {
+						// 登录
+						xmppConnection.login("myfgk", "fangaokui");
+						// 加入到房间
+						userChat = new MultiUserChat(xmppConnection,
+								"bruse@conference.pc-201504062324");
+						userChat.join("测试加入2");
+
+						// 进行接收消息
+						xmppConnection.addPacketListener(new PacketListener() {
+							// 服务器发消息给android客户端的时候执行
+							@Override
+							public void processPacket(Packet packet) {
+								// TODO 自动生成的方法存根
+								// 判断信息是不是群聊的信息,消息分群聊和私聊
+								if (packet instanceof Message) {
+									// 将packet转换为对象
+									Message message = (Message) packet;
+									Type type = message.getType();
+									if (type == Type.groupchat) {
+										// 群聊
+										// 拿到消息的内容
+										final String body = message.getBody();
+										// 在工作线程里面不能改动UI
+										if (MainActivity.instance != null) {
+											MainActivity.instance
+													.runOnUiThread(new Runnable() {
+
+														@Override
+														public void run() {
+															// TODO 自动生成的方法存根
+															try {
+																if (!MainActivity.instance.content
+																		.equals(body)) {
+																	Msg msg = new Msg(
+																			body,
+																			Msg.TYPE_RECEIVE);
+																	MainActivity.instance.arrayList
+																			.add(msg);
+																	// 刷新ListView的显示
+																	MainActivity.instance.adapter
+																			.notifyDataSetChanged();
+																	MainActivity.instance.listview
+																			.setSelection(MainActivity.instance.arrayList
+																					.size());
+																}
+															} catch (Exception e) {
+																// TODO: handle
+																// exception
+															}
+														}
+													});
+										}
+									}
+								}
+							}
+						}, null);
+					}
+				} catch (Exception e) {
+					// TODO: handle exception
+				}
+			};
+		}.start();
+	}
+}

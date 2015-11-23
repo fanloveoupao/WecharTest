@@ -1,0 +1,242 @@
+package com.example.activity;
+
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Iterator;
+
+import org.jivesoftware.smack.RosterEntry;
+import org.jivesoftware.smack.RosterGroup;
+
+import android.app.Activity;
+import android.content.Intent;
+import android.os.Bundle;
+import android.view.View;
+import android.view.View.OnClickListener;
+import android.widget.ImageView;
+import android.widget.ListView;
+import android.widget.TextView;
+
+import com.example.adapter.GroupOneAdapter;
+import com.example.adapter.GroupThreeAdapter;
+import com.example.adapter.GroupTwoAdapter;
+import com.example.bean.ListitemChild;
+import com.example.bean.ListitemChildThree;
+import com.example.bean.ListitemChildTwo;
+import com.example.testwechar.MyApplication;
+import com.example.testwechar.R;
+import com.example.utils.Utils;
+
+public class HomeChar extends Activity {
+	private GroupOneAdapter adapter;
+	private GroupTwoAdapter adapter_two;
+	private GroupThreeAdapter adapter_three;
+	private ArrayList<ListitemChild> arrayList;
+	private ArrayList<ListitemChildTwo> arrayList_two;
+	private ArrayList<ListitemChildThree> arrayList_three;
+	private TextView text;
+	private TextView group_one;
+	private TextView group_two;
+	private TextView group_three;
+	private ListView list_one;
+	private ListView list_two;
+	private ListView list_three;
+	private ImageView img_one, img_two, img_three;
+	private int textone_click = 1;
+	private int texttwo_click = 1;
+	private int textthree_click = 1;
+	public static HomeChar homeChar;
+
+	@Override
+	protected void onCreate(Bundle savedInstanceState) {
+
+		// TODO 自动生成的方法存根
+		super.onCreate(savedInstanceState);
+		setContentView(R.layout.home);
+		homeChar = this;
+		init();
+		init_database();
+		intaddtextclick();
+	}
+
+	private void init() {
+		// TODO 自动生成的方法存根
+		text = (TextView) findViewById(R.id.add);
+		group_one = (TextView) findViewById(R.id.group_one);
+		group_two = (TextView) findViewById(R.id.group_two);
+		group_three = (TextView) findViewById(R.id.group_three);
+		list_one = (ListView) findViewById(R.id.list_one);
+		list_two = (ListView) findViewById(R.id.list_two);
+		list_three = (ListView) findViewById(R.id.list_three);
+		img_one = (ImageView) findViewById(R.id.icon_lau_one);
+		img_two = (ImageView) findViewById(R.id.icon_lau_two);
+		img_three = (ImageView) findViewById(R.id.icon_lau_three);
+
+	}
+
+	private void intaddtextclick() {
+		// TODO 自动生成的方法存根
+		text.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View v) {
+				// TODO 自动生成的方法存根
+				Intent intent = new Intent(getApplicationContext(),
+						AddFriActivity.class);
+				startActivity(intent);
+			}
+		});
+	}
+
+	private void init_database() {
+		group_one.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View v) {
+				// TODO 自动生成的方法存根
+				init_childbase(group_one.getText().toString());
+				textone_click++;
+				if (textone_click % 2 == 0) {
+					img_one.setImageResource(R.drawable.blue);
+					list_one.setVisibility(View.VISIBLE);
+				} else {
+					img_one.setImageResource(R.drawable.gray);
+					list_one.setVisibility(View.GONE);
+				}
+				adapter = new GroupOneAdapter(getApplicationContext(),
+						arrayList);
+				list_one.setAdapter(adapter);
+			}
+		});
+		/**
+		 * 第二个
+		 * */
+		group_two.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View v) {
+				// TODO 自动生成的方法存根
+
+				init_childbasetwo(group_two.getText().toString());
+				texttwo_click++;
+				if (texttwo_click % 2 == 0) {
+					img_two.setImageResource(R.drawable.blue);
+					list_two.setVisibility(View.VISIBLE);
+				} else {
+					img_two.setImageResource(R.drawable.gray);
+					list_two.setVisibility(View.GONE);
+				}
+				adapter_two = new GroupTwoAdapter(getApplicationContext(),
+						arrayList_two);
+				list_two.setAdapter(adapter_two);
+			}
+		});
+		/**
+		 * 第三个
+		 * 
+		 * */
+		group_three.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View v) {
+				// TODO 自动生成的方法存根
+				init_childbasethree(group_two.getText().toString());
+				textthree_click++;
+				if (textthree_click % 2 == 0) {
+					img_three.setImageResource(R.drawable.blue);
+					list_three.setVisibility(View.VISIBLE);
+				} else {
+					img_three.setImageResource(R.drawable.gray);
+					list_three.setVisibility(View.GONE);
+				}
+				adapter_three = new GroupThreeAdapter(getApplicationContext(),
+						arrayList_three);
+				list_two.setAdapter(adapter_three);
+			}
+		});
+	}
+
+	private void init_childbase(String group_name) {
+		// TODO 自动生成的方法存根
+		arrayList = new ArrayList<ListitemChild>();
+		ArrayList<RosterEntry> rosterEntries = new ArrayList<RosterEntry>();
+		rosterEntries = getGroupFriends(group_name);
+		for (RosterEntry entry : rosterEntries) {
+			ListitemChild listitemChild = new ListitemChild();
+			listitemChild.setImage(R.drawable.icon_pwd);
+			listitemChild.setName(Utils.getJidToUsername(entry.getUser()));
+			listitemChild.setNickname("jsdgvjgf");
+			arrayList.add(listitemChild);
+		}
+
+	}
+
+	/**
+	 * 第二个
+	 * 
+	 * */
+	private void init_childbasetwo(String group_name) {
+		// TODO 自动生成的方法存根
+		arrayList_two = new ArrayList<ListitemChildTwo>();
+		ArrayList<RosterEntry> rosterEntries = new ArrayList<RosterEntry>();
+		rosterEntries = getGroupFriends(group_name);
+		for (RosterEntry entry : rosterEntries) {
+			ListitemChildTwo listitemChild = new ListitemChildTwo();
+			listitemChild.setImage(R.drawable.icon_pwd);
+			listitemChild.setName(Utils.getJidToUsername(entry.getUser()));
+			listitemChild.setNickname("jsdgvjgf");
+			arrayList_two.add(listitemChild);
+		}
+
+	}
+
+	/**
+	 * 第三个
+	 * 
+	 * */
+	private void init_childbasethree(String group_name) {
+		// TODO 自动生成的方法存根
+		arrayList_three = new ArrayList<ListitemChildThree>();
+		ArrayList<RosterEntry> rosterEntries = new ArrayList<RosterEntry>();
+		rosterEntries = getGroupFriends(group_name);
+		for (RosterEntry entry : rosterEntries) {
+			ListitemChildThree listitemChild = new ListitemChildThree();
+			listitemChild.setImage(R.drawable.icon_pwd);
+			listitemChild.setName(Utils.getJidToUsername(entry.getUser()));
+			listitemChild.setNickname("jsdgvjgf");
+			arrayList_three.add(listitemChild);
+		}
+
+	}
+
+	/**
+	 * 获取所有组
+	 * 
+	 * @return
+	 */
+	public static ArrayList<RosterGroup> searchAllGroup() {
+		ArrayList<RosterGroup> groups = new ArrayList<RosterGroup>();
+		Collection<RosterGroup> roscol = MyApplication.xmppConnection
+				.getRoster().getGroups();
+		Iterator<RosterGroup> iter = roscol.iterator();
+		while (iter.hasNext()) {
+			groups.add(iter.next());
+		}
+		return groups;
+	}
+
+	/**
+	 * 获取某组的所有好友
+	 * 
+	 */
+	public static ArrayList<RosterEntry> getGroupFriends(String group) {
+		ArrayList<RosterEntry> entries = new ArrayList<RosterEntry>();
+		RosterGroup rosgrou = MyApplication.xmppConnection.getRoster()
+				.getGroup(group);
+		Collection<RosterEntry> roscol = rosgrou.getEntries();
+		Iterator<RosterEntry> iter = roscol.iterator();
+		while (iter.hasNext()) {
+			entries.add(iter.next());
+		}
+		return entries;
+	}
+}

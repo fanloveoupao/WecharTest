@@ -1,0 +1,47 @@
+package com.example.activity;
+
+import android.app.Activity;
+import android.os.Bundle;
+import android.view.View;
+import android.view.View.OnClickListener;
+import android.widget.Button;
+import android.widget.EditText;
+
+import com.example.testwechar.R;
+
+public class JoinActivity extends Activity {
+	private EditText nickname;
+	private EditText roomname;
+	private Button btn_join;
+
+	@Override
+	protected void onCreate(Bundle savedInstanceState) {
+		// TODO 自动生成的方法存根
+		super.onCreate(savedInstanceState);
+		setContentView(R.layout.join_room);
+		init();
+		joinclick();
+	}
+
+	private void init() {
+		// TODO 自动生成的方法存根
+		nickname = (EditText) findViewById(R.id.room_nickname);
+		roomname = (EditText) findViewById(R.id.join_room_name);
+		btn_join = (Button) findViewById(R.id.btn_joinroom);
+	}
+
+	private void joinclick() {
+		// TODO 自动生成的方法存根
+		btn_join.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View v) {
+				// TODO 自动生成的方法存根
+				if (!nickname.getText().toString().equals("")
+						&& !roomname.getText().toString().equals("")) {
+
+				}
+			}
+		});
+	}
+}

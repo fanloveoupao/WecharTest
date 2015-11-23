@@ -1,0 +1,6 @@
+INDEX VERSION 1.126+E:\openfireWeChar\.metadata\.plugins\org.eclipse.jdt.core
+1309962332.index
+3731647702.index
+1748186732.index
+2338664754.index
+2053641491.index

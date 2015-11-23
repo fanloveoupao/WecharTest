@@ -1,0 +1,104 @@
+package com.example.service;
+
+import java.io.File;
+
+import org.jivesoftware.smack.Chat;
+import org.jivesoftware.smack.ChatManager;
+import org.jivesoftware.smack.ChatManagerListener;
+import org.jivesoftware.smack.MessageListener;
+import org.jivesoftware.smack.XMPPException;
+import org.jivesoftware.smack.packet.Message;
+import org.jivesoftware.smackx.filetransfer.FileTransferListener;
+import org.jivesoftware.smackx.filetransfer.FileTransferManager;
+import org.jivesoftware.smackx.filetransfer.FileTransferRequest;
+import org.jivesoftware.smackx.filetransfer.IncomingFileTransfer;
+
+import android.content.Context;
+import android.content.Intent;
+import android.os.Environment;
+import android.util.Log;
+
+import com.example.testwechar.MyApplication;
+
+public class ConnecMethod {
+	/**
+	 * 获取在线消息
+	 * 
+	 */
+	public static void getOnLine(final Context context) {
+		ChatManager cm = MyApplication.xmppConnection.getChatManager();
+		cm.addChatListener(new ChatManagerListener() {
+			@Override
+			public void chatCreated(Chat chat, boolean able) {
+				chat.addMessageListener(new MessageListener() {
+					@Override
+					public void processMessage(Chat chat2, Message message) {
+						Log.d("connectMethod:getOnLine()", message.getBody()
+								+ message.getFrom());
+						if (!message.getBody().equals("")) {
+							sendBroadcastMsg(context, message.getBody());
+						}
+
+					}
+				});
+			}
+		});
+	}
+
+	/**
+	 * 
+	 * 设置广播进行接收
+	 * 
+	 * */
+	private static void sendBroadcastMsg(Context context, String txt) {
+		Intent intent = new Intent();
+		intent.setAction("msg_receiver");
+		intent.putExtra("msg", txt);
+		context.sendBroadcast(intent);
+	}
+
+	/**
+	 * 文件
+	 * 
+	 * @param context
+	 */
+	public static void getOnLineFile(Context context) {
+		FileTransferManager fileTransferManagernew = new FileTransferManager(
+				MyApplication.xmppConnection);
+		FileTransferListener filter = new ChatFileTransferListener(context);
+		fileTransferManagernew.addFileTransferListener(filter);
+	}
+
+	static class ChatFileTransferListener implements FileTransferListener {
+		Context context;
+
+		public ChatFileTransferListener(Context context) {
+			// TODO Auto-generated constructor stub
+			this.context = context;
+		}
+
+		@Override
+		public void fileTransferRequest(FileTransferRequest request) {
+			// TODO Auto-generated method stub
+			try {
+				File insFile = new File(
+						Environment.getExternalStorageDirectory() + "/"
+								+ request.getFileName());
+				IncomingFileTransfer infiletransfer = request.accept();
+				infiletransfer.recieveFile(insFile);
+				sendBroadcastFile(context, insFile.getAbsolutePath());
+			} catch (XMPPException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+	}
+
+	private static void sendBroadcastFile(Context context, String filepath) {
+		Intent intent = new Intent();
+		intent.setAction("file_receiver");
+		intent.putExtra("path", filepath);
+		context.sendBroadcast(intent);
+	}
+
+}

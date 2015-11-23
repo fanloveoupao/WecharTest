@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<session version="1.0">
+<refactoring accessors="true" comment="Delete 7 elements from 项目“Huanxin”&#x0D;&#x0A;－ 原始项目：“Huanxin”&#x0D;&#x0A;－ 原始元素：&#x0D;&#x0A;     drawable&#x0D;&#x0A;     drawable-hdpi&#x0D;&#x0A;     drawable-ldpi&#x0D;&#x0A;     drawable-mdpi&#x0D;&#x0A;     drawable-nodpi&#x0D;&#x0A;     drawable-xhdpi&#x0D;&#x0A;     drawable-xxhdpi" description="删除元素" element1="res/drawable-ldpi" element2="res/drawable-hdpi" element3="res/drawable-mdpi" element4="res/drawable" element5="res/drawable-xxhdpi" element6="res/drawable-xhdpi" element7="res/drawable-nodpi" elements="0" flags="589830" id="org.eclipse.jdt.ui.delete" resources="7" stamp="1444059393448" subPackages="false" version="1.0"/>
+</session>

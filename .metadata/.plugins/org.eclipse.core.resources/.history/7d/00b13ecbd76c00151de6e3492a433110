@@ -1,0 +1,28 @@
+package com.example.activity;
+
+import android.app.Activity;
+import android.os.Bundle;
+import android.widget.Button;
+import android.widget.EditText;
+
+import com.example.testwechar.R;
+
+public class CreateRoomActivity extends Activity {
+	private EditText user;
+	private EditText room;
+	private Button btn_create;
+
+	@Override
+	protected void onCreate(Bundle savedInstanceState) {
+		// TODO 自动生成的方法存根
+		super.onCreate(savedInstanceState);
+		setContentView(R.layout.create_room);
+		init();
+
+	}
+
+	private void init() {
+		// TODO 自动生成的方法存根
+		user = (EditText) findViewById(R.id.room_user);
+	}
+}

@@ -1,0 +1,21 @@
+package com.example.activity;
+
+import android.app.Activity;
+import android.os.Bundle;
+import android.widget.Button;
+import android.widget.EditText;
+
+import com.example.testwechar.R;
+
+public class JoinActivity extends Activity {
+	private EditText nickname;
+	private EditText roomname;
+	private Button btn_join;
+
+	@Override
+	protected void onCreate(Bundle savedInstanceState) {
+		// TODO 自动生成的方法存根
+		super.onCreate(savedInstanceState);
+		setContentView(R.layout.join_room);
+	}
+}
